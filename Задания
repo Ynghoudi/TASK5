@@ -1,0 +1,124 @@
+1 задание
+#include <iostream>
+
+class Engine {
+public:
+    void run() {
+        std::cout << "engine run\n";
+    }
+};
+
+class Car {
+public:
+    Car() {}  
+
+    void start() {
+        engine.run();
+    }
+
+private:
+    Engine engine; 
+};
+
+int main() {
+    Car myCar;
+    myCar.start();
+    return 0;
+}
+2 задание 
+#include <iostream>
+#include <vector>
+
+class Student {
+public:
+    Student(std::string name) : name(name) {}
+    std::string getName() const { return name; }
+private:
+    std::string name;
+};
+
+class University {
+public:
+    void addStudent(Student* student) {
+        students.push_back(student);
+    }
+
+    void listStudents() {
+        for (Student* student : students) {
+            std::cout << student->getName() << std::endl;
+        }
+    }
+
+private:
+    std::vector<Student*> students;
+};
+
+int main() {
+    University myUniversity;
+
+    Student* student1 = new Student("Ivanov");
+    Student* student2 = new Student("Petrov");
+
+    myUniversity.addStudent(student1);
+    myUniversity.addStudent(student2);
+
+    myUniversity.listStudents();
+
+    delete student1;
+    delete student2;
+
+    return 0;
+}
+3 задание
+#include <iostream>
+#include <vector>
+
+class Manager; 
+
+class Programmer {
+public:
+    Programmer(std::string name) : name(name), manager(nullptr) {}
+    std::string getName() const { return name; }
+    void setManager(Manager* manager) { this->manager = manager; }
+private:
+    std::string name;
+    Manager* manager; 
+};
+
+class Manager {
+public:
+    Manager(std::string name) : name(name) {}
+    void addProgrammer(Programmer* programmer) {
+        programmers.push_back(programmer);
+        programmer->setManager(this); 
+    }
+
+    void listProgrammers() {
+        for (Programmer* programmer : programmers) {
+            std::cout << programmer->getName() << std::endl;
+        }
+    }
+
+private:
+    std::string name;
+    std::vector<Programmer*> programmers; 
+};
+
+int main() {
+    Manager* manager = new Manager("Ivanov");
+
+    Programmer* programmer1 = new Programmer("Petrov");
+    Programmer* programmer2 = new Programmer("Sidorov");
+
+    manager->addProgrammer(programmer1);
+    manager->addProgrammer(programmer2);
+
+    std::cout << "List of programmers under Ivanov's management:\n";
+    manager->listProgrammers();
+
+    delete manager;
+    delete programmer1;
+    delete programmer2;
+
+    return 0;
+}
