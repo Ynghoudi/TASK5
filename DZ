@@ -1,0 +1,73 @@
+дз 1
+#include <iostream>
+
+class GameCharacter {
+public:
+    GameCharacter(int health) : health(health) {}
+    virtual void displayInfo() { std::cout << "Health: " << health; }
+protected:
+    int health;
+};
+
+class Warrior : virtual public GameCharacter {
+public:
+    Warrior(int health, int attack) : GameCharacter(health), attack(attack) {}
+protected:
+    int attack;
+};
+
+class Mage : virtual public GameCharacter {
+public:
+    Mage(int health, int mana) : GameCharacter(health), mana(mana) {}
+protected:
+    int mana;
+};
+
+class BattleMage : public Warrior, public Mage {
+public:
+    BattleMage(int health, int mana, int attack) : GameCharacter(health), Warrior(health, attack), Mage(health, mana) {}
+    void displayInfo() override {
+        std::cout << "Health: " << GameCharacter::health << ", Mana: " << Mage::mana << ", Attack: " << Warrior::attack << std::endl;
+    }
+};
+
+int main() {
+    BattleMage bm(100, 200, 50);
+    bm.displayInfo();
+    return 0;
+}
+дз 2
+#include <iostream>
+#include <string>
+
+class Character {
+public:
+    Character(std::string name) : name(name) {}
+    virtual void introduce() { std::cout << "I am " << name << "."; }
+protected:
+    std::string name;
+};
+
+class Hero : virtual public Character {
+public:
+    Hero(std::string name) : Character(name) {}
+};
+
+class Villain : virtual public Character {
+public:
+    Villain(std::string name) : Character(name) {}
+};
+
+class AntiHero : public Hero, public Villain {
+public:
+    AntiHero(std::string name) : Character(name), Hero(name), Villain(name) {}
+    void introduce() override {
+        std::cout << "I am " << Character::name << ". I am both a hero and a villain. I do what I want!" << std::endl;
+    }
+};
+
+int main() {
+    AntiHero ah("Deadpool");
+    ah.introduce();
+    return 0;
+}
